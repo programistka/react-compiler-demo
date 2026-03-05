@@ -1,118 +1,136 @@
 # React Compiler Demo
 
-This project demonstrates how **React Compiler** automatically optimizes React components without the need for manual optimizations like `memo`, `useMemo`, and `useCallback`.
+Projekt demonstracyjny pokazujący, jak **React Compiler** automatycznie optymalizuje komponenty React bez potrzeby ręcznych optymalizacji takich jak `memo`, `useMemo` i `useCallback`.
 
-## 🚀 Features
+## 🚀 Funkcje
 
-### ✅ Good Examples (`GoodExamples.tsx`)
-- Components **without** `React.memo()`
-- Functions **without** `useCallback()`
-- Calculations **without** `useMemo()`
-- All automatically optimized by React Compiler!
+### ✅ Dobre Przykłady (`GoodExamples.tsx`)
+- Komponenty **bez** `React.memo()`
+- Funkcje **bez** `useCallback()`
+- Obliczenia **bez** `useMemo()`
+- Wszystko automatycznie optymalizowane przez React Compiler!
 
-### ❌ Bad Examples (`BadExamples.tsx`)
-Examples of code that **violates Rules of React** and triggers ESLint errors:
+### ❌ Złe Przykłady (`BadExamples.tsx`)
+Przykłady kodu **naruszającego Reguły React** i wywołującego błędy ESLint:
 
-1. **Object Mutation** - Mutating objects after creation
-2. **Array Mutation** - Direct array mutations
-3. **Conditional Hooks** - Calling hooks conditionally
-4. **Props Mutation** - Mutating component props
-5. **Side Effects During Render** - Side effects outside useEffect
-6. **Stale State** - Using outdated state values
-7. **Direct State Mutation** - Mutating state directly
-8. **Unnecessary Derived State** - Redundant state derivation
+1. **Mutacja Obiektów** - Modyfikowanie obiektów po utworzeniu
+2. **Mutacja Tablic** - Bezpośrednie modyfikowanie tablic
+3. **Warunkowe Hooki** - Wywoływanie hooków warunkowo
+4. **Mutacja Props** - Modyfikowanie właściwości komponentu
+5. **Efekty Uboczne Podczas Renderowania** - Efekty uboczne poza useEffect
+6. **Nieaktualne Dane State** - Używanie przestarzałych wartości stanu
+7. **Bezpośrednia Mutacja State** - Bezpośrednie modyfikowanie stanu
+8. **Niepotrzebny Stan Pochodny** - Redundantne derywowanie stanu
 
-## 🛠️ Setup
+## 🛠️ Instalacja
 
 ```bash
 yarn install
 yarn dev
 ```
 
-Open your browser and navigate to the local development server (usually `http://localhost:5173`).
+Otwórz przeglądarkę i przejdź do lokalnego serwera deweloperskiego (zwykle `http://localhost:5173`).
 
-## 📋 ESLint Configuration
+## 📋 Konfiguracja ESLint
 
-The project uses `eslint-plugin-react-compiler` to detect Rules of React violations:
+Projekt używa najnowszej konfiguracji ESLint z reguły `react-hooks` do wykrywania naruszeń Reguł React:
 
 ```javascript
 // eslint.config.js
-import reactCompiler from 'eslint-plugin-react-compiler'
+import js from "@eslint/js";
+import globals from "globals";
+import reactHooks from "eslint-plugin-react-hooks";
+import reactRefresh from "eslint-plugin-react-refresh";
+import tseslint from "typescript-eslint";
+import { defineConfig, globalIgnores } from "eslint/config";
 
 export default defineConfig([
+  globalIgnores(["dist"]),
   {
-    files: ['**/*.{ts,tsx}'],
-    plugins: {
-      'react-compiler': reactCompiler,
+    files: ["**/*.{ts,tsx}"],
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.recommended,
+      reactHooks.configs.flat["recommended-latest"],
+      reactRefresh.configs.vite,
+    ],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.browser,
     },
     rules: {
-      'react-compiler/react-compiler': 'error',
+      "react-hooks/exhaustive-deps": "error",
     },
   },
-])
+]);
 ```
 
-## 🔍 Check for Errors
+## 🔍 Sprawdzanie Błędów
 
-Run ESLint to see all Rules of React violations:
+Uruchom ESLint, aby zobaczyć wszystkie naruszenia Reguł React:
 
 ```bash
 yarn lint
 ```
 
-Build the project to see React Compiler optimizations:
+Zbuduj projekt, aby zobaczyć optymalizacje React Compiler:
 
 ```bash
 yarn build
 ```
 
-### Expected ESLint Errors in `BadExamples.tsx`:
+### Oczekiwane błędy ESLint w `BadExamples.tsx`:
 
-- ❌ **Conditional hook calls** (react-compiler/react-compiler)
+- ❌ **Warunkowe wywołania hooków** (react-hooks/rules-of-hooks)
   ```
-  Hooks must always be called in a consistent order
+  Hooki muszą być zawsze wywoływane w tej samej kolejności
   ```
-- ❌ **Mutating props** (react-compiler/react-compiler)
+- ❌ **Mutowanie props** (react-hooks)
   ```
-  Mutating component props or hook arguments is not allowed
+  Mutowanie właściwości komponentu lub argumentów hooków nie jest dozwolone
   ```
-- ❌ **Side effects during render** (react-compiler/react-compiler)
+- ❌ **Efekty uboczne podczas renderowania** (react-hooks)
   ```
-  Writing to a variable defined outside a component is not allowed
+  Zapisywanie do zmiennej zdefiniowanej poza komponentem nie jest dozwolone
   ```
-- ❌ **Mutating state** (react-compiler/react-compiler)
+- ❌ **Mutowanie stanu** (react-hooks)
   ```
-  Mutating a value returned from 'useState()' is not allowed
+  Mutowanie wartości zwróconej z 'useState()' nie jest dozwolone
   ```
-- ❌ **Immutability violations** (react-hooks/immutability)
+- ❌ **Brakujące zależności** (react-hooks/exhaustive-deps)
+  ```
+  Efekt używa zmiennych, które nie są wymienione w tablicy zależności
+  ```
 
-## 🎯 React Compiler Benefits
+## 🎯 Korzyści z React Compiler
 
-React Compiler automatically:
-- ✅ Memoizes components (no need for `React.memo`)
-- ✅ Memoizes values (no need for `useMemo`)
-- ✅ Memoizes functions (no need for `useCallback`)
-- ✅ Optimizes re-rendering without manual intervention
-- ✅ Detects Rules of React violations via ESLint
+React Compiler automatycznie:
+- ✅ Memoizuje komponenty (nie potrzeba `React.memo`)
+- ✅ Memoizuje wartości (nie potrzeba `useMemo`)
+- ✅ Memoizuje funkcje (nie potrzeba `useCallback`)
+- ✅ Optymalizuje ponowne renderowanie bez ręcznej interwencji
+- ✅ Wykrywa naruszenia Reguł React poprzez ESLint
 
-**Note:** This will impact Vite dev & build performances, but the runtime performance will be significantly better.
+**Uwaga:** Może to wpłynąć na wydajność deweloperską i budowania w Vite, ale wydajność w czasie rzeczywistym będzie znacznie lepsza.
 
-## 🔧 Configuration
+## 🔧 Konfiguracja
 
-### Tech Stack
+### Stos Technologiczny
 - **React** 19.2.0
 - **TypeScript** 5.9.3
 - **Vite** 7.3.1
+- **Tailwind CSS** 4.2.1
 - **babel-plugin-react-compiler** 1.0.0
-- **eslint-plugin-react-compiler** 19.1.0-rc.2
 
-### Vite Config (`vite.config.ts`)
+### Konfiguracja Vite (`vite.config.ts`)
 ```typescript
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   plugins: [
+    tailwindcss(),
     react({
       babel: {
         plugins: [['babel-plugin-react-compiler']],
@@ -122,99 +140,94 @@ export default defineConfig({
 })
 ```
 
-### ESLint Config (`eslint.config.js`)
+### Konfiguracja ESLint (`eslint.config.js`)
 ```javascript
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import reactCompiler from 'eslint-plugin-react-compiler'
-import tseslint from 'typescript-eslint'
-import { defineConfig, globalIgnores } from 'eslint/config'
+import js from "@eslint/js";
+import globals from "globals";
+import reactHooks from "eslint-plugin-react-hooks";
+import reactRefresh from "eslint-plugin-react-refresh";
+import tseslint from "typescript-eslint";
+import { defineConfig, globalIgnores } from "eslint/config";
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  globalIgnores(["dist"]),
   {
-    files: ['**/*.{ts,tsx}'],
+    files: ["**/*.{ts,tsx}"],
     extends: [
       js.configs.recommended,
       tseslint.configs.recommended,
-      reactHooks.configs.flat.recommended,
+      reactHooks.configs.flat["recommended-latest"],
       reactRefresh.configs.vite,
     ],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
     },
-    plugins: {
-      'react-compiler': reactCompiler,
-    },
     rules: {
-      'react-compiler/react-compiler': 'error',
+      "react-hooks/exhaustive-deps": "error",
     },
   },
-])
+]);
 ```
 
-## 🎨 UI Navigation
+## 🎨 Nawigacja w UI
 
-Use the **tab navigation** at the top to switch between:
-- **✅ Good Examples** - Properly optimized code with React Compiler
-- **❌ Bad Examples** - Rules of React violations with ESLint errors
+Użyj **nawigacji zakładek** na górze, aby przełączać się między:
+- **✅ Dobre Przykłady** - Poprawnie zoptymalizowany kod z React Compiler
+- **❌ Złe Przykłady** - Naruszenia Reguł React z błędami ESLint
 
-The navigation is **sticky** at the top, so it remains accessible as you scroll through the content.
+Nawigacja jest **przyklejona** na górze, dzięki czemu pozostaje dostępna podczas przewijania treści.
 
-## 🐛 Viewing ESLint Errors
+## 🐛 Przeglądanie Błędów ESLint
 
-Open `src/BadExamples.tsx` in your IDE to see:
-- Red underlines on problematic code
-- Hover over errors to see detailed messages
-- ESLint will show exactly what Rules of React are violated
+Otwórz `src/BadExamples.tsx` w swoim IDE, aby zobaczyć:
+- Czerwone podkreślenia problematycznego kodu
+- Najedź na błędy, aby zobaczyć szczegółowe komunikaty
+- ESLint pokaże dokładnie, które Reguły React zostały naruszone
 
-Example errors you'll see:
+Przykładowe błędy, które zobaczysz:
 ```
-❌ Line 43: Hooks must always be called in a consistent order
-❌ Line 53: Mutating component props is not allowed
-❌ Line 63: Writing to external variables during render is not allowed
-❌ Line 100: Mutating state returned from useState() is not allowed
+❌ Linia 43: Hooki muszą być zawsze wywoływane w tej samej kolejności
+❌ Linia 53: Mutowanie właściwości komponentu nie jest dozwolone
+❌ Linia 63: Zapisywanie do zmiennych zewnętrznych podczas renderowania nie jest dozwolone
+❌ Linia 100: Mutowanie stanu zwróconego z useState() nie jest dozwolone
 ```
 
-**Note:** The ESLint errors in `BadExamples.tsx` are **intentional** to demonstrate what React Compiler detects and prevents!
+**Uwaga:** Błędy ESLint w `BadExamples.tsx` są **celowe**, aby zademonstrować, co React Compiler wykrywa i zapobiega!
 
-## 📚 Learn More
+## 📚 Dowiedz się Więcej
 
-- [React Compiler Documentation](https://react.dev/learn/react-compiler)
-- [Rules of React](https://react.dev/reference/rules)
+- [Dokumentacja React Compiler](https://react.dev/learn/react-compiler)
+- [Reguły React](https://react.dev/reference/rules)
 - [React DevTools](https://react.dev/learn/react-developer-tools)
-- [eslint-plugin-react-compiler](https://www.npmjs.com/package/eslint-plugin-react-compiler)
 - [babel-plugin-react-compiler](https://www.npmjs.com/package/babel-plugin-react-compiler)
 
-## 📝 Project Structure
+## 📝 Struktura Projektu
 
 ```
 src/
-├── App.tsx              # Main app with tab navigation
-├── GoodExamples.tsx     # ✅ Good examples (optimized by React Compiler)
-├── BadExamples.tsx      # ❌ Bad examples (Rules of React violations)
-├── main.tsx             # Entry point
-└── index.css            # Global styles
+├── App.tsx              # Główna aplikacja z nawigacją zakładek
+├── GoodExamples.tsx     # ✅ Dobre przykłady (zoptymalizowane przez React Compiler)
+├── BadExamples.tsx      # ❌ Złe przykłady (naruszenia Reguł React)
+├── main.tsx             # Punkt wejścia
+└── index.css            # Globalne style
 ```
 
-## 🚨 Important Notes
+## 🚨 Ważne Uwagi
 
-1. **React Compiler works transparently** - you won't see special badges in React DevTools. The optimizations happen at compile time.
+1. **React Compiler działa transparentnie** - nie zobaczysz specjalnych oznaczeń w React DevTools. Optymalizacje zachodzą w czasie kompilacji.
 
-2. **ESLint is your friend** - The `react-compiler/react-compiler` rule will catch code that violates Rules of React and prevent React Compiler from optimizing it.
+2. **ESLint jest Twoim przyjacielem** - Reguły `react-hooks` wychwytują kod naruszający Reguły React i zapobiegają optymalizacji przez React Compiler.
 
-3. **Write clean React code** - Follow the Rules of React, and React Compiler will automatically optimize your components without manual `memo`, `useMemo`, or `useCallback`.
+3. **Pisz czysty kod React** - Przestrzegaj Reguł React, a React Compiler automatycznie zoptymalizuje Twoje komponenty bez ręcznego `memo`, `useMemo` czy `useCallback`.
 
-4. **The errors in `BadExamples.tsx` are intentional** - they serve as educational examples of what NOT to do.
+4. **Błędy w `BadExamples.tsx` są celowe** - służą jako przykłady edukacyjne tego, czego NIE robić.
 
-## 🎓 Learning Path
+## 🎓 Ścieżka Nauki
 
-1. Start by exploring `GoodExamples.tsx` to see properly written React code
-2. Click "Bad Examples" tab to see common mistakes
-3. Open `BadExamples.tsx` in your IDE to see ESLint errors
-4. Run `yarn lint` to see all violations in the terminal
-5. Compare the two approaches to understand React Compiler requirements
+1. Zacznij od eksploracji `GoodExamples.tsx`, aby zobaczyć poprawnie napisany kod React
+2. Kliknij zakładkę "Bad Examples", aby zobaczyć typowe błędy
+3. Otwórz `BadExamples.tsx` w swoim IDE, aby zobaczyć błędy ESLint
+4. Uruchom `yarn lint`, aby zobaczyć wszystkie naruszenia w terminalu
+5. Porównaj oba podejścia, aby zrozumieć wymagania React Compiler
 
