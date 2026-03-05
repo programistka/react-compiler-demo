@@ -6,10 +6,10 @@ const ExpensiveChild = ({ count, onIncrement }: { count: number; onIncrement: ()
   console.log('ExpensiveChild rendering');
 
   return (
-    <div style={{ padding: '30px', border: '2px solid #646cff', margin: '20px 0', borderRadius: '12px', background: '#0f0f0f' }}>
-      <h3 style={{ fontSize: '24px', marginBottom: '12px' }}>Child Component (without memo)</h3>
-      <p style={{ fontSize: '20px', marginBottom: '16px' }}>Count: <span style={{ color: '#646cff', fontWeight: 'bold' }}>{count}</span></p>
-      <button onClick={onIncrement} style={{ padding: '12px 24px', fontSize: '16px' }}>Increment count</button>
+    <div className="p-[30px] border-2 border-[#646cff] my-5 rounded-xl bg-[#0f0f0f]">
+      <h3 className="text-2xl mb-3">Child Component (without memo)</h3>
+      <p className="text-xl mb-4">Count: <span className="text-[#646cff] font-bold">{count}</span></p>
+      <button onClick={onIncrement} className="px-6 py-3 text-base">Increment count</button>
     </div>
   );
 };
@@ -19,20 +19,11 @@ const ListItem = ({ item, onRemove }: { item: string; onRemove: (item: string) =
   console.log(`ListItem "${item}" rendering`);
 
   return (
-    <li style={{ padding: '12px 16px', margin: '8px 0', background: '#1a1a1a', borderRadius: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: '1px solid #333' }}>
-      <span style={{ fontSize: '16px' }}>{item}</span>
+    <li className="px-4 py-3 my-2 bg-[#1a1a1a] rounded-lg flex justify-between items-center border border-[#333]">
+      <span className="text-base">{item}</span>
       <button
         onClick={() => onRemove(item)}
-        style={{
-          padding: '8px 16px',
-          background: '#ff6b6b',
-          color: 'white',
-          border: 'none',
-          borderRadius: '6px',
-          cursor: 'pointer',
-          fontSize: '14px',
-          fontWeight: '500'
-        }}
+        className="px-4 py-2 bg-[#ff6b6b] text-white border-none rounded-[6px] cursor-pointer text-sm font-medium"
       >
         Remove
       </button>
@@ -80,10 +71,10 @@ const GoodExamples = () => {
   }, 0);
 
   return (
-    <div style={{ padding: '40px', minHeight: '100vh', background: '#0a0a0a' }}>
-      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-        <h1 style={{ fontSize: '48px', marginBottom: '16px', background: 'linear-gradient(135deg, #646cff 0%, #61dafb 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>React Compiler Demo</h1>
-        <p style={{ color: '#888', fontSize: '18px', marginBottom: '40px' }}>
+    <div className="p-10 min-h-screen bg-[#0a0a0a]">
+      <div className="max-w-[1400px] mx-auto">
+        <h1 className="text-[48px] mb-4 bg-[linear-gradient(135deg,#646cff_0%,#61dafb_100%)] bg-clip-text text-transparent">React Compiler Demo</h1>
+        <p className="text-[#888] text-lg mb-10">
           This component would normally require memo, useMemo and useCallback.
           <br />
           With React Compiler everything is automatically optimized! 🚀
@@ -93,37 +84,37 @@ const GoodExamples = () => {
       <ExpensiveChild count={count} onIncrement={handleIncrement} />
 
       {/* Result of "expensive" calculation - normally would need useMemo */}
-      <div style={{ padding: '30px', background: '#1a1a1a', margin: '20px 0', borderRadius: '12px', border: '1px solid #333' }}>
-        <h3 style={{ fontSize: '24px', marginBottom: '12px' }}>Expensive Calculation (without useMemo)</h3>
-        <p style={{ fontSize: '20px', color: '#646cff' }}>Result: {expensiveCalculation}</p>
+      <div className="p-[30px] bg-[#1a1a1a] my-5 rounded-xl border border-[#333]">
+        <h3 className="text-2xl mb-3">Expensive Calculation (without useMemo)</h3>
+        <p className="text-xl text-[#646cff]">Result: {expensiveCalculation}</p>
       </div>
 
       {/* List with filtering - normally would need useMemo and useCallback */}
-      <div style={{ padding: '30px', border: '2px solid #61dafb', margin: '20px 0', borderRadius: '12px', background: '#0f0f0f' }}>
-        <h3 style={{ fontSize: '24px', marginBottom: '20px' }}>Items List (without memo on components)</h3>
+      <div className="p-[30px] border-2 border-[#61dafb] my-5 rounded-xl bg-[#0f0f0f]">
+        <h3 className="text-2xl mb-5">Items List (without memo on components)</h3>
 
-        <div style={{ marginBottom: '20px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+        <div className="mb-5 flex gap-[10px] flex-wrap">
           <input
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             placeholder="New item..."
-            style={{ padding: '12px 16px', marginRight: '5px', minWidth: '300px', background: '#1a1a1a', border: '1px solid #333', color: 'white', borderRadius: '8px', fontSize: '16px' }}
+            className="px-4 py-3 mr-[5px] min-w-[300px] bg-[#1a1a1a] border border-[#333] text-white rounded-lg text-base"
           />
-          <button onClick={handleAddItem} style={{ padding: '12px 24px', fontSize: '16px' }}>Add</button>
+          <button onClick={handleAddItem} className="px-6 py-3 text-base">Add</button>
         </div>
 
-        <div style={{ marginBottom: '20px' }}>
+        <div className="mb-5">
           <input
             type="text"
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
             placeholder="Filter list..."
-            style={{ padding: '12px 16px', minWidth: '300px', background: '#1a1a1a', border: '1px solid #333', color: 'white', borderRadius: '8px', fontSize: '16px' }}
+            className="px-4 py-3 min-w-[300px] bg-[#1a1a1a] border border-[#333] text-white rounded-lg text-base"
           />
         </div>
 
-        <ul style={{ textAlign: 'left', listStyle: 'none', padding: 0 }}>
+        <ul className="text-left list-none p-0">
           {filteredItems.map(item => (
             <ListItem
               key={item}
@@ -133,14 +124,14 @@ const GoodExamples = () => {
           ))}
         </ul>
 
-        <p style={{ fontSize: '14px', color: '#888', marginTop: '16px' }}>
+        <p className="text-sm text-[#888] mt-4">
           Number of items: {filteredItems.length} / {items.length}
         </p>
       </div>
 
-      <div style={{ marginTop: '40px', padding: '30px', background: 'linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%)', borderRadius: '12px', border: '1px solid #333' }}>
-        <h4 style={{ fontSize: '24px', marginBottom: '16px' }}>💡 What React Compiler does for you:</h4>
-        <ul style={{ textAlign: 'left', fontSize: '16px', lineHeight: '2' }}>
+      <div className="mt-10 p-[30px] bg-[linear-gradient(135deg,#2a2a2a_0%,#1f1f1f_100%)] rounded-xl border border-[#333]">
+        <h4 className="text-2xl mb-4">💡 What React Compiler does for you:</h4>
+        <ul className="text-left text-base leading-[2]">
           <li>✅ Automatically memoizes components (instead of React.memo)</li>
           <li>✅ Automatically memoizes values (instead of useMemo)</li>
           <li>✅ Automatically memoizes functions (instead of useCallback)</li>
