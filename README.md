@@ -8,9 +8,28 @@ This project demonstrates how **React Compiler** automatically optimizes React c
 
 The demo is automatically deployed to GitHub Pages on every push to the main branch.
 
+### Screenshots
 
+<table>
+<tr>
+<td width="50%">
 
-📝 Blog Post
+**✅ Good Examples**
+
+![Good Examples](.github/images/GoodExamples.png)
+
+</td>
+<td width="50%">
+
+**❌ Bad Examples**
+
+![Bad Examples](.github/images/BadExamples.png)
+
+</td>
+</tr>
+</table>
+
+## 📝 Blog Post
 
 This demo accompanies the blog post: **[9 błędów, które zablokują React Compiler i jak wykrywa je ESLint](https://programistka.com/9-bledow-ktore-zablokuja-react-compiler-i-jak-wykrywa-je-eslint/)**
 
