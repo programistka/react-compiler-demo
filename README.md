@@ -8,7 +8,9 @@ This project demonstrates how **React Compiler** automatically optimizes React c
 
 The demo is automatically deployed to GitHub Pages on every push to the main branch.
 
-## 📝 Blog Post
+
+
+📝 Blog Post
 
 This demo accompanies the blog post: **[9 błędów, które zablokują React Compiler i jak wykrywa je ESLint](https://programistka.com/9-bledow-ktore-zablokuja-react-compiler-i-jak-wykrywa-je-eslint/)**
 
@@ -17,12 +19,14 @@ Read the article to learn more about common mistakes that prevent React Compiler
 ## 🚀 Features
 
 ### ✅ Good Examples (`GoodExamples.tsx`)
+
 - Components **without** `React.memo()`
 - Functions **without** `useCallback()`
 - Calculations **without** `useMemo()`
 - All automatically optimized by React Compiler!
 
 ### ❌ Bad Examples (`BadExamples.tsx`)
+
 Examples of code that **violates Rules of React** and triggers ESLint errors:
 
 1. **Conditional Hook Calls** - Calling hooks conditionally
@@ -120,6 +124,7 @@ yarn build
 ## 🎯 React Compiler Benefits
 
 React Compiler automatically:
+
 - ✅ Memoizes components (no need for `React.memo`)
 - ✅ Memoizes values (no need for `useMemo`)
 - ✅ Memoizes functions (no need for `useCallback`)
@@ -131,6 +136,7 @@ React Compiler automatically:
 ## 🔧 Configuration
 
 ### Tech Stack
+
 - **React** 19.2.0
 - **TypeScript** 5.9.3
 - **Vite** 7.3.1
@@ -138,6 +144,7 @@ React Compiler automatically:
 - **babel-plugin-react-compiler** 1.0.0
 
 ### Vite Config (`vite.config.ts`)
+
 ```typescript
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
@@ -156,6 +163,7 @@ export default defineConfig({
 ```
 
 ### ESLint Config (`eslint.config.js`)
+
 ```javascript
 import js from "@eslint/js";
 import globals from "globals";
@@ -188,6 +196,7 @@ export default defineConfig([
 ## 🎨 UI Navigation
 
 Use the **tab navigation** at the top to switch between:
+
 - **✅ Good Examples** - Properly optimized code with React Compiler
 - **❌ Bad Examples** - Rules of React violations with ESLint errors
 
@@ -196,11 +205,13 @@ The navigation is **sticky** at the top, so it remains accessible as you scroll 
 ## 🐛 Viewing ESLint Errors
 
 Open `src/BadExamples.tsx` in your IDE to see:
+
 - Red underlines on problematic code
 - Hover over errors to see detailed messages
 - ESLint will show exactly what Rules of React are violated
 
 Example errors you'll see:
+
 ```
 ❌ Issue 1: Conditional hook calls (react-hooks/rules-of-hooks)
 ❌ Issue 2: Mutating props directly
@@ -236,11 +247,8 @@ src/
 ## 🚨 Important Notes
 
 1. **React Compiler works transparently** - you won't see special badges in React DevTools. The optimizations happen at compile time.
-
 2. **ESLint is your friend** - The `react-hooks` rules will catch code that violates Rules of React and may prevent React Compiler from optimizing properly.
-
 3. **Write clean React code** - Follow the Rules of React, and React Compiler will automatically optimize your components without manual `memo`, `useMemo`, or `useCallback`.
-
 4. **The errors in `BadExamples.tsx` are intentional** - they serve as educational examples of what NOT to do.
 
 ## 🎓 Learning Path
@@ -254,6 +262,7 @@ src/
 ## 📖 Detailed Issue Explanations
 
 ### Issue 1: Conditional Hook Calls
+
 **Rule violated:** `react-hooks/rules-of-hooks`
 
 Hooks must be called in the exact same order on every render. Calling hooks conditionally breaks this rule.
@@ -272,6 +281,7 @@ if (showCount) {
 ```
 
 ### Issue 2: Props Mutation
+
 **Rule violated:** Immutability
 
 Props are read-only. Mutating them directly violates React's immutability principle.
@@ -285,6 +295,7 @@ const newData = { ...data, value: 100 };
 ```
 
 ### Issue 3: Side Effects During Render
+
 **Rule violated:** Component purity
 
 Components should be pure functions. Side effects should be in `useEffect`.
@@ -300,6 +311,7 @@ useEffect(() => {
 ```
 
 ### Issue 4: Direct State Mutation
+
 **Rule violated:** State immutability
 
 State must be treated as immutable. Always create a new object/array when updating.
@@ -314,6 +326,7 @@ setUser({ ...user, age: 26 });
 ```
 
 ### Issue 5: Hook Inside a Loop
+
 **Rule violated:** `react-hooks/rules-of-hooks`
 
 Hooks cannot be called inside loops because the number of hooks must be consistent.
@@ -329,6 +342,7 @@ const [states, setStates] = useState(items);
 ```
 
 ### Issue 6: Hook Inside Nested Function
+
 **Rule violated:** `react-hooks/rules-of-hooks`
 
 Hooks must be called at the top level of a component, not inside nested functions.
@@ -345,6 +359,7 @@ const [count] = useState(0);
 ```
 
 ### Issue 7: Missing Effect Dependencies
+
 **Rule violated:** `react-hooks/exhaustive-deps`
 
 All variables used inside `useEffect` must be declared in the dependency array.
@@ -362,6 +377,7 @@ useEffect(() => {
 ```
 
 ### Issue 8: Component Defined Inside Render
+
 **Rule violated:** `react-hooks/rules-of-hooks`
 
 Components should be defined outside of render to avoid recreating them on every render.
@@ -386,6 +402,7 @@ const MyComponent = () => {
 ```
 
 ### Issue 9: Mutating Hook Values
+
 **Rule violated:** Reactive value immutability
 
 Values returned from hooks (like state) should be treated as immutable.
@@ -407,5 +424,3 @@ The project detects these violations using:
 - **`react-hooks/rules-of-hooks`** - Detects Issues 1, 5, 6, 8
 - **`react-hooks/exhaustive-deps`** - Detects Issue 7
 - **Component purity and immutability** - Issues 2, 3, 4, 9 (detected at compile time by React Compiler)
-
-
